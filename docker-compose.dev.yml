@@ -1,0 +1,32 @@
+name: chitragupta-dev
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: chitragupta-postgres
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-chitragupta}
+      POSTGRES_USER: ${POSTGRES_USER:-chitragupta}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chitragupta_dev_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - chitragupta-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-chitragupta} -d ${POSTGRES_DB:-chitragupta}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      - chitragupta-net
+
+volumes:
+  chitragupta-postgres-data:
+
+networks:
+  chitragupta-net:
+    name: chitragupta-net
