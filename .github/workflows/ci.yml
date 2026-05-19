@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Ktlint Check
+        run: ./gradlew --no-daemon ktlintCheck
+
+  build_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Build and Test
+        run: ./gradlew --no-daemon clean test build
+
+  docker_smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Docker Compose Build and Start
+        run: docker compose up --build -d
+
+      - name: Wait for Health
+        run: |
+          status="starting"
+          for _ in $(seq 1 30); do
+            status=$(docker inspect --format='{{.State.Health.Status}}' chitragupta-app || echo "missing")
+            if [ "$status" = "healthy" ]; then
+              break
+            fi
+            sleep 3
+          done
+          test "$status" = "healthy"
+
+      - name: Show Compose Status
+        run: docker compose ps
+
+      - name: Teardown
+        if: always()
+        run: docker compose down -v
