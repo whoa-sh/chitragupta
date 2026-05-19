@@ -46,7 +46,7 @@ LABEL org.opencontainers.image.title="chitragupta" \
 COPY --from=builder --chown=spring:spring /workspace/app.jar /app/app.jar
 
 ENV SPRING_PROFILES_ACTIVE=docker
-ENV JAVA_OPTS="-XX:+UseG1GC -XX:InitialRAMPercentage=20.0 -XX:MaxRAMPercentage=70.0 -XX:MaxGCPauseMillis=200 -XX:+ExitOnOutOfMemoryError"
+ENV JAVA_OPTS="-XX:+UseG1GC -XX:InitialRAMPercentage=10.0 -XX:MaxRAMPercentage=60.0 -XX:MaxGCPauseMillis=200 -XX:+ExitOnOutOfMemoryError"
 
 EXPOSE 8080
 

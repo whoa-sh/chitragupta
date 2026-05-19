@@ -31,7 +31,7 @@ jobs:
       - name: Set up Gradle Cache
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
 
       - name: Ktlint Check
         run: ./gradlew --no-daemon ktlintCheck
@@ -51,7 +51,7 @@ jobs:
       - name: Set up Gradle Cache
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
 
       - name: Build and Test
         run: ./gradlew --no-daemon clean test build
@@ -62,8 +62,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Docker Compose Build and Start
-        run: docker compose up --build -d
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build App Image with Cache
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          tags: chitragupta-app:local
+          cache-from: type=gha,scope=docker-smoke
+          cache-to: type=gha,mode=max,scope=docker-smoke
+
+      - name: Docker Compose Start (No Build)
+        run: docker compose up -d --no-build
 
       - name: Wait for Health
         run: |

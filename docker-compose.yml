@@ -21,7 +21,7 @@ services:
     cpus: "${APP_CPUS_LIMIT:-1.0}"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-docker}
-      JAVA_OPTS: "${JAVA_OPTS:--XX:+UseG1GC -XX:InitialRAMPercentage=20.0 -XX:MaxRAMPercentage=70.0 -XX:MaxGCPauseMillis=200 -XX:+ExitOnOutOfMemoryError}"
+      JAVA_OPTS: "${JAVA_OPTS:--XX:+UseG1GC -XX:InitialRAMPercentage=10.0 -XX:MaxRAMPercentage=60.0 -XX:MaxGCPauseMillis=200 -XX:+ExitOnOutOfMemoryError}"
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-chitragupta}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-chitragupta}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-chitragupta_dev_password}
