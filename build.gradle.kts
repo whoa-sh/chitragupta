@@ -4,6 +4,7 @@ plugins {
 	id("org.springframework.boot") version "4.0.6"
 	id("io.spring.dependency-management") version "1.1.7"
 	kotlin("plugin.jpa") version "2.2.21"
+	id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
 }
 
 group = "sh.whoa"
@@ -11,7 +12,7 @@ version = "0.0.1-SNAPSHOT"
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(24)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -46,6 +47,17 @@ allOpen {
 	annotation("jakarta.persistence.Embeddable")
 }
 
+ktlint {
+	verbose.set(true)
+	filter {
+		exclude("**/generated/**")
+	}
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.named("check") {
+	dependsOn("ktlintCheck")
 }
