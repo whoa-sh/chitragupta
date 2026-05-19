@@ -16,7 +16,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-chitragupta}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chitragupta_dev_password}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${POSTGRES_PORT:-7612}:5432"
     volumes:
       - chitragupta-postgres-data:/var/lib/postgresql/data
     healthcheck:

@@ -38,8 +38,8 @@ Note: if this repository is private, badge URLs can return `404` for unauthentic
 1. Clone the repo and `cd` into it.
 2. Run: `docker compose up --build`
 3. Open:
-   - App: `http://localhost:8080`
-   - Health: `http://localhost:8080/actuator/health`
+   - App: `http://localhost:7611`
+   - Health: `http://localhost:7611/actuator/health`
 
 This path is ready out-of-the-box with local-safe defaults.
 If you want overrides, create `.env` from `.env.example`.
@@ -62,6 +62,13 @@ Run app from IDE with:
 - `SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:${POSTGRES_PORT}/${POSTGRES_DB}`
 - `SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}`
 - `SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}`
+
+Default local values in `.env.example`:
+
+- `APP_PORT=7611`
+- `POSTGRES_PORT=7612`
+- Port series convention for service `#1`: `7611` (app), `7612` (db).
+  For the next services, continue the series (`7621/7622`, `7631/7632`, ...).
 
 ## Migrations (Flyway)
 

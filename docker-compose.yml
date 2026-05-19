@@ -26,7 +26,7 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-chitragupta}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-chitragupta_dev_password}
     ports:
-      - "${APP_PORT:-8080}:8080"
+      - "${APP_PORT:-7611}:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -54,7 +54,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-chitragupta}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-chitragupta_dev_password}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${POSTGRES_PORT:-7612}:5432"
     volumes:
       - chitragupta-postgres-data:/var/lib/postgresql/data
     healthcheck:
