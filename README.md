@@ -76,6 +76,7 @@ Default local values in `.env.example`:
 - Naming convention: `V<version>__<description>.sql` (example: `V2__add_accounts_table.sql`).
 - On startup, Flyway runs before JPA initialization.
 - Current baseline: `V1__init.sql`.
+- Tests keep `contextLoads` and run with Flyway enabled against H2 in PostgreSQL mode.
 
 ## CI/CD Policy
 
