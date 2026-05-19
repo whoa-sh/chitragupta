@@ -17,6 +17,7 @@ concurrency:
 
 jobs:
   lint:
+    name: Lint (ktlint)
     runs-on: ubuntu-slim
     steps:
       - name: Checkout
@@ -37,6 +38,7 @@ jobs:
         run: ./gradlew --no-daemon ktlintCheck
 
   build_test:
+    name: Build & Test (Gradle)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -57,6 +59,7 @@ jobs:
         run: ./gradlew --no-daemon clean test build
 
   docker_smoke:
+    name: Docker Smoke Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
