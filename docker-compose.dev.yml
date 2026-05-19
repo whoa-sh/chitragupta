@@ -7,6 +7,10 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+    pids_limit: ${POSTGRES_PIDS_LIMIT:-256}
+    mem_limit: ${POSTGRES_MEM_LIMIT:-512m}
+    mem_reservation: ${POSTGRES_MEM_RESERVATION:-256m}
+    cpus: "${POSTGRES_CPUS_LIMIT:-1.0}"
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-chitragupta}
       POSTGRES_USER: ${POSTGRES_USER:-chitragupta}

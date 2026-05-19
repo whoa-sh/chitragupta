@@ -10,17 +10,18 @@ services:
     restart: unless-stopped
     read_only: true
     tmpfs:
-      - /tmp:rw,noexec,nosuid,size=${APP_TMPFS_SIZE:-64m}
+      - /tmp:rw,nosuid,size=${APP_TMPFS_SIZE:-64m}
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
     pids_limit: ${APP_PIDS_LIMIT:-256}
     mem_limit: ${APP_MEM_LIMIT:-768m}
-    cpus: "${APP_CPUS:-1.0}"
+    mem_reservation: ${APP_MEM_RESERVATION:-512m}
+    cpus: "${APP_CPUS_LIMIT:-1.0}"
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-docker}
-      JAVA_OPTS: ${JAVA_OPTS:-}
+      JAVA_OPTS: "${JAVA_OPTS:--XX:+UseG1GC -XX:InitialRAMPercentage=20.0 -XX:MaxRAMPercentage=70.0 -XX:MaxGCPauseMillis=200 -XX:+ExitOnOutOfMemoryError}"
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-chitragupta}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-chitragupta}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-chitragupta_dev_password}
@@ -44,6 +45,10 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+    pids_limit: ${POSTGRES_PIDS_LIMIT:-256}
+    mem_limit: ${POSTGRES_MEM_LIMIT:-512m}
+    mem_reservation: ${POSTGRES_MEM_RESERVATION:-256m}
+    cpus: "${POSTGRES_CPUS_LIMIT:-1.0}"
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-chitragupta}
       POSTGRES_USER: ${POSTGRES_USER:-chitragupta}

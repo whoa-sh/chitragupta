@@ -109,6 +109,7 @@ Flow:
 - `tmpfs` mount for `/tmp`
 - `cap_drop: [ALL]`
 - `no-new-privileges:true`
+- Explicit CPU/memory/pid limits and memory reservations for app and PostgreSQL
 - Healthchecks for app and database
 
 ## Environment Variables
@@ -121,11 +122,16 @@ Defined in `.env.example`:
 - `APP_TMPFS_SIZE`
 - `APP_PIDS_LIMIT`
 - `APP_MEM_LIMIT`
-- `APP_CPUS`
+- `APP_MEM_RESERVATION`
+- `APP_CPUS_LIMIT`
 - `POSTGRES_DB`
 - `POSTGRES_USER`
 - `POSTGRES_PASSWORD`
 - `POSTGRES_PORT`
+- `POSTGRES_PIDS_LIMIT`
+- `POSTGRES_MEM_LIMIT`
+- `POSTGRES_MEM_RESERVATION`
+- `POSTGRES_CPUS_LIMIT`
 
 ## Build and Test Commands
 
