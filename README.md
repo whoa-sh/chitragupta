@@ -78,6 +78,11 @@ Default local values in `.env.example`:
 - Current baseline: `V1__init.sql`.
 - Tests keep `contextLoads` and run with Flyway enabled against H2 in PostgreSQL mode.
 
+If you modify an already-applied migration locally, reset the local Postgres volume before restart:
+
+- `docker compose down -v`
+- `docker compose up --build`
+
 ## CI/CD Policy
 
 ### CI (`.github/workflows/ci.yml`)
