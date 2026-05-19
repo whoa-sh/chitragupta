@@ -50,7 +50,8 @@ RUN set -eux; \
 
 LABEL org.opencontainers.image.title="chitragupta" \
 	org.opencontainers.image.description="Kotlin Spring Boot service" \
-	org.opencontainers.image.licenses="Proprietary"
+	org.opencontainers.image.licenses="Proprietary" \
+	org.opencontainers.image.source="https://github.com/whoash/chitragupta"
 
 COPY --from=builder --chown=spring:spring /workspace/app.jar /app/app.jar
 
