@@ -5,6 +5,8 @@
 
 `chitragupta` is a Kotlin + Spring Boot service using JPA, Flyway migrations, Actuator, and PostgreSQL.
 
+Note: if this repository is private, badge URLs can return `404` for unauthenticated viewers.
+
 ## Stack
 
 - Kotlin 2.2
@@ -31,14 +33,16 @@
 `- .github/workflows/
 ```
 
-## Local Quick Start
+## Fast Start (Docker Only)
 
-1. Copy env template:
-   - Unix: `cp .env.example .env`
-   - PowerShell: `Copy-Item .env.example .env`
-2. Start full local stack: `docker compose up --build`
-3. App endpoint: `http://localhost:8080`
-4. Health endpoint: `http://localhost:8080/actuator/health`
+1. Clone the repo and `cd` into it.
+2. Run: `docker compose up --build`
+3. Open:
+   - App: `http://localhost:8080`
+   - Health: `http://localhost:8080/actuator/health`
+
+This path is ready out-of-the-box with local-safe defaults.
+If you want overrides, create `.env` from `.env.example`.
 
 Stop:
 
@@ -50,7 +54,7 @@ Stop:
 Start only PostgreSQL:
 
 ```bash
-docker compose -f docker-compose.dev.yml up
+docker compose -f docker-compose.dev.yml up -d
 ```
 
 Run app from IDE with:
@@ -77,9 +81,9 @@ Runs on:
 
 Jobs run in parallel:
 
-- `lint` -> `ktlintCheck`
-- `build_test` -> `clean test build`
-- `docker_smoke` -> `docker compose up --build`, health wait, teardown
+- `Lint (ktlint)` -> `ktlintCheck`
+- `Build & Test (Gradle)` -> `clean test build`
+- `Docker Smoke Test` -> cached image build, compose start, health wait, teardown
 
 PR behavior:
 
