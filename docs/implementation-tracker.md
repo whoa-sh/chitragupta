@@ -22,7 +22,7 @@ Last updated: 2026-05-19
 | T6 | Add container release workflow | done | Master-only publish path + SBOM + vulnerability scan | `actionlint` clean for workflow files; publish guarded to `refs/heads/master` push only | d8504ff | `.github/workflows/container.yml` |
 | T7 | Add Dependabot config | done | Actions/Gradle/Docker updates configured | Config created under `.github/dependabot.yml` | d8504ff | Weekly updates for actions, gradle, and docker |
 | T8 | Add CI badges + docs updates | done | README badges and policy docs are complete | README updated; compose app remained healthy after doc phase | 4ab271a | Final doc pass |
-| T9 | Keep `contextLoads` with Flyway enabled | done | No Flyway disable in tests; `contextLoads` passes with migrations active | `docker run ... eclipse-temurin:21-jdk-jammy ./gradlew --no-daemon clean test build` succeeded | pending | `V1__init.sql` simplified to a clean, portable baseline migration |
+| T9 | Keep `contextLoads` with Flyway enabled | done | No Flyway disable in tests; `contextLoads` passes with migrations active | `docker run ... eclipse-temurin:21-jdk-jammy ./gradlew --no-daemon clean test build` succeeded | 78c6849 | `V1__init.sql` simplified to a clean, portable baseline migration |
 
 ## Validation Commands
 
