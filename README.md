@@ -1,11 +1,6 @@
 # Chitragupta
 
-[![CI](https://github.com/whoash/chitragupta/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/whoash/chitragupta/actions/workflows/ci.yml)
-[![Container Release](https://github.com/whoash/chitragupta/actions/workflows/container.yml/badge.svg?branch=master)](https://github.com/whoash/chitragupta/actions/workflows/container.yml)
-
 `chitragupta` is a Kotlin + Spring Boot service using JPA, Flyway migrations, Actuator, and PostgreSQL.
-
-Note: if this repository is private, badge URLs can return `404` for unauthenticated viewers.
 
 ## Stack
 
@@ -30,6 +25,8 @@ Note: if this repository is private, badge URLs can return `404` for unauthentic
 |- docker-compose.yml
 |- docker-compose.dev.yml
 |- .env.example
+|- Makefile
+|- scripts/dev.ps1
 `- .github/workflows/
 ```
 
@@ -57,6 +54,12 @@ Start only PostgreSQL:
 docker compose -f docker-compose.dev.yml up -d
 ```
 
+Stop dependencies:
+
+```bash
+docker compose -f docker-compose.dev.yml down -v
+```
+
 Run app from IDE with:
 
 - `SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:${POSTGRES_PORT}/${POSTGRES_DB}`
@@ -77,11 +80,14 @@ Default local values in `.env.example`:
 - On startup, Flyway runs before JPA initialization.
 - Current baseline: `V1__init.sql`.
 - Tests keep `contextLoads` and run with Flyway enabled against H2 in PostgreSQL mode.
+- Applied migrations are immutable. Do not edit an already-applied `V*__*.sql`; create a new migration file instead.
 
 If you modify an already-applied migration locally, reset the local Postgres volume before restart:
 
 - `docker compose down -v`
 - `docker compose up --build`
+
+This volume reset guidance is for local development recovery only.
 
 ## CI/CD Policy
 
@@ -92,11 +98,24 @@ Runs on:
 - Pull requests to `master`
 - Pushes to `master`
 
-Jobs run in parallel:
+Jobs:
 
 - `Lint (ktlint)` -> `ktlintCheck`
-- `Build & Test (Gradle)` -> `clean test build`
-- `Docker Smoke Test` -> cached image build, compose start, health wait, teardown
+- `Build & Test (Gradle)` -> `clean test build` (runs after lint)
+- Uploads `gradle-test-report` artifact on every run
+
+### Docker Smoke (`.github/workflows/docker-smoke.yml`)
+
+Runs on:
+
+- Successful completion of `CI` workflow
+
+Flow:
+
+1. Build app image with GHA cache
+2. Compose start and health wait
+3. Upload `docker-smoke-summary` artifact (`compose ps`, health payload, container logs)
+4. Teardown
 
 PR behavior:
 
@@ -152,10 +171,51 @@ Defined in `.env.example`:
 
 ## Build and Test Commands
 
-- `./gradlew test`
-- `./gradlew build`
-- `./gradlew ktlintCheck`
-- `./gradlew clean`
+Gradle (Unix-like):
+
+```bash
+./gradlew --no-daemon test
+./gradlew --no-daemon build
+./gradlew --no-daemon ktlintCheck
+./gradlew --no-daemon clean
+```
+
+Gradle (Windows PowerShell):
+
+```powershell
+.\gradlew.bat --no-daemon test
+.\gradlew.bat --no-daemon build
+.\gradlew.bat --no-daemon ktlintCheck
+.\gradlew.bat --no-daemon clean
+```
+
+Helper scripts:
+
+```bash
+make test
+make lint
+make compose-up
+make compose-down-v
+```
+
+```powershell
+.\scripts\dev.ps1 test
+.\scripts\dev.ps1 lint
+.\scripts\dev.ps1 compose-up
+.\scripts\dev.ps1 compose-down-v
+```
+
+## Quick Links
+
+- [Dockerfile](./Dockerfile)
+- [Compose (full app)](./docker-compose.yml)
+- [Compose (dependencies only)](./docker-compose.dev.yml)
+- [Environment template](./.env.example)
+- [Make helper targets](./Makefile)
+- [PowerShell helper script](./scripts/dev.ps1)
+- [CI workflow](./.github/workflows/ci.yml)
+- [Docker smoke workflow](./.github/workflows/docker-smoke.yml)
+- [Container release workflow](./.github/workflows/container.yml)
 
 On Windows, use `.\gradlew.bat ...`.
 
