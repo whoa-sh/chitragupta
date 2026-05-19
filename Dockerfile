@@ -3,7 +3,16 @@
 FROM eclipse-temurin:21-jdk-jammy AS builder
 WORKDIR /workspace
 
-# Copy build and wrapper files first to maximize dependency-layer cache reuse.
+# Copy Gradle build and wrapper files first for dependency-layer cache reuse.
+COPY gradlew gradlew.bat settings.gradle.kts build.gradle.kts /workspace/
+COPY gradle /workspace/gradle
+
+RUN --mount=type=cache,target=/root/.gradle \
+	set -eux; \
+	chmod +x gradlew || true; \
+	./gradlew --no-daemon dependencies
+
+# Copy the remaining project files.
 COPY . .
 
 RUN --mount=type=cache,target=/root/.m2 \
