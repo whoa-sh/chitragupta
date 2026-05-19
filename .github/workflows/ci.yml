@@ -33,9 +33,6 @@ jobs:
         with:
           cache-read-only: ${{ github.event_name == 'pull_request' }}
 
-      - name: Ensure Gradle Wrapper Executable
-        run: chmod +x ./gradlew
-
       - name: Ktlint Check
         run: ./gradlew --no-daemon ktlintCheck
 
@@ -55,9 +52,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: ${{ github.event_name == 'pull_request' }}
-
-      - name: Ensure Gradle Wrapper Executable
-        run: chmod +x ./gradlew
 
       - name: Build and Test
         run: ./gradlew --no-daemon clean test build
