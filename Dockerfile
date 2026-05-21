@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/root/.m2 \
 	--mount=type=cache,target=/root/.gradle \
 	set -eux; \
 	chmod +x gradlew || true; \
-	chmod +x mvnw || true; \
+	if [ -f mvnw ]; then chmod +x mvnw; fi; \
 	if [ -f pom.xml ]; then \
 		if [ -f mvnw ]; then \
 			./mvnw -q -DskipTests package; \
@@ -46,6 +46,7 @@ WORKDIR /app
 
 RUN set -eux; \
 	addgroup -S spring && adduser -S -G spring spring; \
+	apk upgrade --no-cache; \
 	apk add --no-cache wget
 
 LABEL org.opencontainers.image.title="chitragupta" \
