@@ -11,7 +11,6 @@ import java.util.UUID
 
 @MappedSuperclass
 class BaseEntity {
-
 	@Id
 	val id: UUID = UUIDv7.randomUUID()
 

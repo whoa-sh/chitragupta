@@ -1,17 +1,16 @@
 package sh.whoa.chitragupta.util
 
-import java.nio.ByteBuffer
-import java.util.UUID
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.nio.ByteBuffer
 import java.util.Collections
+import java.util.UUID
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 class UUIDv7Test {
-
 	@Test
 	fun `test no duplicate UUID should be generated`() {
 		val uuidSet = mutableSetOf<UUID>()
@@ -108,7 +107,6 @@ class UUIDv7Test {
 
 		assertTrue(u1 < u2, "UUID with later millisecond should be greater")
 	}
-
 
 	/** 12-bit rand_a is split as: byte6 low-nibble = high 4 bits, byte7 = low 8 bits. */
 	private fun extractRandA(uuid: UUID): Int {

@@ -65,8 +65,8 @@ object UUIDv7 {
 	}
 
 	// Big-endian 8-byte to long
-	private fun ByteArray.toLongBE(offset: Int = 0): Long {
-		return ((this[offset].toLong() and 0xFF) shl 56) or
+	private fun ByteArray.toLongBE(offset: Int = 0): Long =
+		((this[offset].toLong() and 0xFF) shl 56) or
 			((this[offset + 1].toLong() and 0xFF) shl 48) or
 			((this[offset + 2].toLong() and 0xFF) shl 40) or
 			((this[offset + 3].toLong() and 0xFF) shl 32) or
@@ -74,7 +74,6 @@ object UUIDv7 {
 			((this[offset + 5].toLong() and 0xFF) shl 16) or
 			((this[offset + 6].toLong() and 0xFF) shl 8) or
 			(this[offset + 7].toLong() and 0xFF)
-	}
 
 	/**
 	 * Returns the 12-bit monotonic sequence for the given millisecond:
@@ -108,7 +107,10 @@ object UUIDv7 {
 		}
 	}
 
-	private fun packState(millis: Long, seq: Int): Long = (millis shl 12) or (seq.toLong() and 0x0FFFL)
+	private fun packState(
+		millis: Long,
+		seq: Int,
+	): Long = (millis shl 12) or (seq.toLong() and 0x0FFFL)
 
 	private fun unpackMillis(state: Long): Long = state shr 12
 

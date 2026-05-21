@@ -23,6 +23,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Gradle Wrapper Validation
+        uses: gradle/actions/wrapper-validation@v4
+
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
