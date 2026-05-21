@@ -96,12 +96,13 @@ object UUIDv7 {
 			} else {
 				// Same millisecond or clock moved backwards: increment sequence
 				val nextSeq = lastSeq + 1
-				val nextState = if (nextSeq > 0x0FFF) {
-					// Overflow: increment timestamp and reset sequence to 0
-					packState(lastTs + 1, 0)
-				} else {
-					packState(lastTs, nextSeq)
-				}
+				val nextState =
+					if (nextSeq > 0x0FFF) {
+						// Overflow: increment timestamp and reset sequence to 0
+						packState(lastTs + 1, 0)
+					} else {
+						packState(lastTs, nextSeq)
+					}
 				if (lastState.compareAndSet(prevState, nextState)) {
 					return nextState
 				}

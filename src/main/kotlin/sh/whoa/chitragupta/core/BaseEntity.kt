@@ -14,7 +14,6 @@ import java.util.UUID
 
 @MappedSuperclass
 abstract class BaseEntity : Persistable<UUID> {
-
 	@Id
 	private val id: UUID = UUIDv7.randomUUID()
 
